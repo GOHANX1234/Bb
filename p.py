@@ -180,7 +180,7 @@ async def start(update: Update, context) -> None:
         balances[user_key] = 0
         save_balances(balances)
     user_name = user.first_name if user.first_name else "there"
-    image_url = "https://i.ibb.co/q3TFkx0V/IMG-20250315-125625.jpg"
+    image_url = "https://i.ibb.co/q3TFkx0/IMG-20250315-125625.jpg"
     # Manually written small-caps reply text
     caption = ("❤️ ʜᴇʏ " + user_name + "!! ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ꜰꜰ ʙᴏᴛ!\n\n"
                "👉 ᴜꜱᴇ ᴛʜᴇ ʙᴜᴛᴛᴏɴꜱ ʙᴇʟᴏᴡ ᴛᴏ ɴᴀᴠɪɢᴀᴛᴇ.\n\n"
@@ -603,8 +603,18 @@ def main():
     app.add_handler(CallbackQueryHandler(cancel_purchase_callback, pattern=r"^/CancelPurchase"))
     app.add_handler(CallbackQueryHandler(check_balance_callback, pattern=r"^/CheckBalance"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_button_text))
-    print("Bot is running...")
-    app.run_polling()
+
+    # --- New: Setup for webhook mode ---
+    port = int(os.environ.get("PORT", 5000))
+    # Replace '<your-render-app>' with your actual Render application domain
+    webhook_url = f"https://bot-0zuc.onrender.com/8001988418:AAEV2CFV7RJu1L34Qaz8E255E87ie8OhFz8"
+    print(f"Bot is running on webhook mode: Listening on 0.0.0.0:{port}, webhook URL: {webhook_url}")
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=port,
+        url_path=BOT_TOKEN,
+        webhook_url=webhook_url
+    )
 
 if __name__ == '__main__':
     main()
