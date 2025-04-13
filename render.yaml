@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python p.py
+    envVars:
+      - key: BOT_TOKEN
+        value: 8001988418:AAEV2CFV7RJu1L34Qaz8E255E87ie8OhFz8
